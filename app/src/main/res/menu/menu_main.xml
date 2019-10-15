@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item android:id="@+id/itemPesquisa"
+        android:title="@string/item_pesquisar"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_pesquisar_branco_24dp"
+        />
+
+    <item android:id="@+id/menuConfiguracoes"
+        android:title="@string/menu_configuracao"
+        app:showAsAction="never"
+        />
+
+    <item android:id="@+id/menuSair"
+        android:title="@string/menu_sair"
+        app:showAsAction="never"
+        />
+
+</menu>
