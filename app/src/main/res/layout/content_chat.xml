@@ -48,7 +48,16 @@
                 android:inputType="textPersonName" />
 
             <ImageView
-                android:id="@+id/imageView4"
+                android:id="@+id/imageGaleriaChat"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="8dp"
+                android:background="@drawable/ic_galeria_cinza_24dp" />
+
+            <ImageView
+                android:id="@+id/imageCameraChat"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="@drawable/ic_camera_cinza_24dp" />

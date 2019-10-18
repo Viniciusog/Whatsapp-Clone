@@ -18,6 +18,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.viniciusog.whatsapp.Helper.Base64Custom;
 import com.viniciusog.whatsapp.Helper.UsuarioFirebase;
@@ -39,6 +42,9 @@ public class ChatActivity extends AppCompatActivity {
     private TextView textViewNome;
     private Usuario usuarioDestinatario;
     private EditText editMensagem;
+    private DatabaseReference database;
+    private DatabaseReference mensagensRef;
+    private ChildEventListener childEventListenerMensagens;
 
     //id usuários remetentes e destinatário
     private String idUsuarioRemetente;
@@ -101,6 +107,12 @@ public class ChatActivity extends AppCompatActivity {
         recyclerMensagens.setLayoutManager( layoutManager );
         recyclerMensagens.setHasFixedSize( true );
         recyclerMensagens.setAdapter( adapter );
+
+        //Pegando referência das mensagens do firebase
+        database = ConfiguracaoFirebase.getFirebaseDatabase();
+        mensagensRef = database.child("mensagens")
+                .child(idUsuarioRemetente)
+                .child(idUsuarioDestinatario);
     }
 
     public void enviarMensagem(View view) {
@@ -115,6 +127,9 @@ public class ChatActivity extends AppCompatActivity {
             //Salvar mensagem para o remetente
             salvarMensagem(idUsuarioRemetente, idUsuarioDestinatario, msg);
 
+            //Salvar mensagem para o destinatário
+            salvarMensagem(idUsuarioDestinatario, idUsuarioRemetente, msg);
+
         } else {
             Toast.makeText(ChatActivity.this,
                     "Insira uma mensagem para enviar! ",
@@ -125,14 +140,58 @@ public class ChatActivity extends AppCompatActivity {
 
     private void salvarMensagem(String idRemetente, String idDestinatario, Mensagem msg) {
         DatabaseReference database = ConfiguracaoFirebase.getFirebaseDatabase();
-        DatabaseReference mensagemRef = database.child("mensagens");
+        mensagensRef = database.child("mensagens");
 
-        mensagemRef.child(idRemetente)
+        mensagensRef.child(idRemetente)
                 .child(idDestinatario)
                 .push()
                 .setValue(msg);
 
         //limpar texto
         editMensagem.setText("");
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        recuperarMensagem();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mensagensRef.removeEventListener( childEventListenerMensagens );
+    }
+
+    private void recuperarMensagem() {
+
+    childEventListenerMensagens = mensagensRef.addChildEventListener(new ChildEventListener() {
+        @Override
+        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+            Mensagem mensagem = dataSnapshot.getValue( Mensagem.class );
+            mensagens.add( mensagem );
+            adapter.notifyDataSetChanged(); //Adapter será atualizado
+        }
+
+        @Override
+        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+        }
+
+        @Override
+        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+
+        }
+    });
     }
 }
