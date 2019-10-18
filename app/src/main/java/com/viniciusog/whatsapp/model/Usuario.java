@@ -9,10 +9,12 @@ import com.viniciusog.whatsapp.Helper.UsuarioFirebase;
 import com.viniciusog.whatsapp.activity.ConfiguracaoActivity;
 import com.viniciusog.whatsapp.config.ConfiguracaoFirebase;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Usuario {
+//Serializable é necessário para passar objeto entre activity e outra
+public class Usuario implements Serializable {
 
     //Id do usuário é o email em base 64
     private String id;
