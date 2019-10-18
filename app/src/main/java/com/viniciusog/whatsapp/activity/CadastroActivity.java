@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.viniciusog.whatsapp.Helper.Base64Custom;
+import com.viniciusog.whatsapp.Helper.UsuarioFirebase;
 import com.viniciusog.whatsapp.R;
 import com.viniciusog.whatsapp.config.ConfiguracaoFirebase;
 import com.viniciusog.whatsapp.model.Usuario;
@@ -31,7 +32,7 @@ public class CadastroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cadastro);
 
-        campoNome = findViewById(R.id.editNome);
+        campoNome = findViewById(R.id.editPerfilNome);
         campoEmail = findViewById(R.id.editLoginEmail);
         campoSenha = findViewById(R.id.editLoginSenha);
     }
@@ -46,6 +47,8 @@ public class CadastroActivity extends AppCompatActivity {
                     Toast.makeText(CadastroActivity.this,
                             "Usuário cadastrado com sucesso!",
                             Toast.LENGTH_SHORT).show();
+
+                    UsuarioFirebase.atualizarNomeUsuario( usuario.getNome() );
                     finish();
 
                     try {
