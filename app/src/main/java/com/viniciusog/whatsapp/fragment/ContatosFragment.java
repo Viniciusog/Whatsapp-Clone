@@ -22,6 +22,7 @@ import com.viniciusog.whatsapp.Helper.RecyclerItemClickListener;
 import com.viniciusog.whatsapp.Helper.UsuarioFirebase;
 import com.viniciusog.whatsapp.R;
 import com.viniciusog.whatsapp.activity.ChatActivity;
+import com.viniciusog.whatsapp.activity.GrupoActivity;
 import com.viniciusog.whatsapp.adapter.ContatosAdapter;
 import com.viniciusog.whatsapp.config.ConfiguracaoFirebase;
 import com.viniciusog.whatsapp.model.Usuario;
@@ -80,9 +81,18 @@ public class ContatosFragment extends Fragment {
                             public void onItemClick(View view, int position) {
                                 Usuario usuarioSelecionado = listaContatos.get( position );
 
-                                Intent intent = new Intent(getActivity(), ChatActivity.class);
-                                intent.putExtra("chatContato", usuarioSelecionado);
-                                startActivity( intent );
+                                boolean cabecalho = usuarioSelecionado.getEmail().isEmpty();
+
+                                if ( cabecalho ) {
+
+                                    Intent intent = new Intent(getActivity(), GrupoActivity.class);
+                                    startActivity( intent );
+
+                                } else {
+                                    Intent intent = new Intent(getActivity(), ChatActivity.class);
+                                    intent.putExtra("chatContato", usuarioSelecionado);
+                                    startActivity( intent );
+                                }
                             }
 
                             @Override
@@ -97,6 +107,15 @@ public class ContatosFragment extends Fragment {
                         }
                 )
         );
+
+        /*Difine usuário com email vazio,
+         * em caso de email vazio, o usuário
+          * será utilizado como cabeçalho, exibindo novo grupo*/
+        Usuario itemGrupo = new Usuario();
+        itemGrupo.setNome("Novo Grupo");
+        itemGrupo.setEmail("");
+
+        listaContatos.add( itemGrupo );
 
         return view;
     }

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
@@ -23,6 +24,7 @@ import com.viniciusog.whatsapp.fragment.ConversasFragment;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth autenticacao;
+    private MaterialSearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         //Configurando abas
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+        final FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(),
                 FragmentPagerItems.with(this)
                         .add("Conversas", ConversasFragment.class)
@@ -47,10 +49,51 @@ public class MainActivity extends AppCompatActivity {
         );
 
         ViewPager viewPager = findViewById(R.id.viewPager);
-        viewPager.setAdapter( adapter );
+        viewPager.setAdapter(adapter);
 
         SmartTabLayout viewPagerTab = findViewById(R.id.viewPagerTab);
-        viewPagerTab.setViewPager( viewPager );
+        viewPagerTab.setViewPager(viewPager);
+
+        searchView = findViewById(R.id.materialSearchPrincipal);
+
+        //Listener para o search view
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                ConversasFragment fragment = (ConversasFragment) adapter.getPage(0);
+                fragment.recarregarConversas();
+            }
+        });
+
+        //Listener para a caixa de texto
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            //É chamado quando o usuário confirma a digitação
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            //Este é chamado em tempo de execução
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                ConversasFragment fragment = (ConversasFragment) adapter.getPage(0);
+
+                if (newText != null && !newText.isEmpty()) {
+                    //Passar o novo texto para pesquisa como letras minúsculas
+                    fragment.pesquisarConversas(newText.toLowerCase());
+                } else {
+                    //Regarrega a lista de conversas original com todas as conversas
+                    fragment.recarregarConversas();
+                }
+                return true;
+            }
+        });
     }
 
     @Override
@@ -58,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
+
+        //Configurar botão de pesquisa
+        MenuItem item = menu.findItem(R.id.menuPesquisa);
+        searchView.setMenuItem(item);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -65,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.itemPesquisa: {
+            case R.id.menuPesquisa: {
                 break;
             }
             case R.id.menuConfiguracoes: {
@@ -91,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void abrirConfiguracoes() {
-        Intent intent = new Intent (MainActivity.this, ConfiguracaoActivity.class);
-        startActivity( intent );
+        Intent intent = new Intent(MainActivity.this, ConfiguracaoActivity.class);
+        startActivity(intent);
 
     }
 }

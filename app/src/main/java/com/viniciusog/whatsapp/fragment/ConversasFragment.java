@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,6 +91,7 @@ public class ConversasFragment extends Fragment {
 
                     }
                 }
+
         ));
 
         //Configurar conversasRef
@@ -97,6 +99,7 @@ public class ConversasFragment extends Fragment {
         database = ConfiguracaoFirebase.getFirebaseDatabase();
         conversasRef = database.child("conversas")
                 .child(identificadorUsuario);
+
 
         return view;
     }
@@ -111,6 +114,35 @@ public class ConversasFragment extends Fragment {
     public void onStop() {
         super.onStop();
         conversasRef.removeEventListener(childEventListenerConversas);
+    }
+
+    public void pesquisarConversas(String texto) {
+
+        List<Conversa> listaConversasBusca = new ArrayList<>();
+
+        String nome = null;
+        String ultimaMensagem = null;
+
+        for (Conversa conversa : listaConversa) {
+            nome = conversa.getUsuarioExibicao().getNome().toLowerCase();
+            ultimaMensagem = conversa.getUltimaMensagem().toLowerCase();
+
+            if (nome.contains(texto) || ultimaMensagem.contains(texto)) {
+                listaConversasBusca.add(conversa);
+            }
+        }
+
+        //Estamos 'refazendo' o adapter pois agora será listaConversaBusca que será exibida
+        adapter = new ConversasAdapter(listaConversasBusca, getActivity());
+        recyclerViewConversas.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    //Regarrega a lista de conversas original com todas as conversas
+    public void recarregarConversas() {
+        adapter = new ConversasAdapter(listaConversa, getActivity());
+        recyclerViewConversas.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     private void recuperarConversas() {

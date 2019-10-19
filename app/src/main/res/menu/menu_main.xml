@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-    <item android:id="@+id/itemPesquisa"
+    <item android:id="@+id/menuPesquisa"
         android:title="@string/item_pesquisar"
         app:showAsAction="always"
         android:icon="@drawable/ic_pesquisar_branco_24dp"
