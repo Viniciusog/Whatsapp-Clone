@@ -112,7 +112,9 @@ public class ConversasFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        listaConversa.clear();
         recuperarConversas();
+
     }
 
     @Override

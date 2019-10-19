@@ -83,8 +83,8 @@ public class ContatosFragment extends Fragment {
                             public void onItemClick(View view, int position) {
 
                                 List<Usuario> listaContatosAtualizada = adapter.getListaContatos();
-
                                 Usuario usuarioSelecionado = listaContatosAtualizada.get(position);
+
                                 boolean cabecalho = usuarioSelecionado.getEmail().isEmpty();
 
                                 if (cabecalho) {
@@ -112,6 +112,15 @@ public class ContatosFragment extends Fragment {
                 )
         );
 
+        return view;
+    }
+
+    //Ao iniciar o fragment chamamos o método 'recuperarContatos'
+    @Override
+    public void onStart() {
+        super.onStart();
+        listaContatos.clear();
+
         /*Difine usuário com email vazio,
          * em caso de email vazio, o usuário
          * será utilizado como cabeçalho, exibindo novo grupo*/
@@ -120,14 +129,7 @@ public class ContatosFragment extends Fragment {
         itemGrupo.setEmail("");
 
         listaContatos.add(itemGrupo);
-
-        return view;
-    }
-
-    //Ao iniciar o fragment chamamos o método 'recuperarContatos'
-    @Override
-    public void onStart() {
-        super.onStart();
+        
         recuperarContatos();
     }
 
