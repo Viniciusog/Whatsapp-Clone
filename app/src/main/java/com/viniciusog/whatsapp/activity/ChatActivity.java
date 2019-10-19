@@ -38,6 +38,7 @@ import com.viniciusog.whatsapp.Helper.UsuarioFirebase;
 import com.viniciusog.whatsapp.R;
 import com.viniciusog.whatsapp.adapter.MensagensAdapter;
 import com.viniciusog.whatsapp.config.ConfiguracaoFirebase;
+import com.viniciusog.whatsapp.model.Conversa;
 import com.viniciusog.whatsapp.model.Mensagem;
 import com.viniciusog.whatsapp.model.Usuario;
 
@@ -254,12 +255,26 @@ public class ChatActivity extends AppCompatActivity {
             //Salvar mensagem para o destinatário
             salvarMensagem(idUsuarioDestinatario, idUsuarioRemetente, msg);
 
+            //Salvar conversa
+            salvarConversa(msg);
+
         } else {
             Toast.makeText(ChatActivity.this,
                     "Insira uma mensagem para enviar! ",
                     Toast.LENGTH_SHORT)
                     .show();
         }
+    }
+
+    private void salvarConversa(Mensagem mensagem) {
+
+        Conversa conversaRemetente = new Conversa();
+        conversaRemetente.setIdRemetente( idUsuarioRemetente );
+        conversaRemetente.setIdDestinatario( idUsuarioDestinatario );
+        conversaRemetente.setUltimaMensagem( mensagem.getMensagem() );
+        conversaRemetente.setUsuarioExibicao( usuarioDestinatario );
+
+        conversaRemetente.salvar();
     }
 
     private void salvarMensagem(String idRemetente, String idDestinatario, Mensagem msg) {
