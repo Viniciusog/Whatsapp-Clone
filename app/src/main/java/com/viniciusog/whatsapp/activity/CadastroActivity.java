@@ -48,12 +48,12 @@ public class CadastroActivity extends AppCompatActivity {
                             "Usuário cadastrado com sucesso!",
                             Toast.LENGTH_SHORT).show();
 
-                    UsuarioFirebase.atualizarNomeUsuario( usuario.getNome() );
+                    UsuarioFirebase.atualizarNomeUsuario(usuario.getNome());
                     finish();
 
                     try {
                         String identificadorUsuario = Base64Custom.codificarBase64(usuario.getEmail());
-                        usuario.setId( identificadorUsuario );
+                        usuario.setId(identificadorUsuario);
                         usuario.salvar();
 
                     } catch (Exception e) {
@@ -66,7 +66,7 @@ public class CadastroActivity extends AppCompatActivity {
                         throw task.getException();
                     } catch (FirebaseAuthWeakPasswordException e) {
                         excecao = "Digite uma senha mais forte!";
-                    } catch (FirebaseAuthInvalidCredentialsException e){
+                    } catch (FirebaseAuthInvalidCredentialsException e) {
                         excecao = "Digite um email válido!";
                     } catch (FirebaseAuthUserCollisionException e) {
                         excecao = "Esta conta já foi cadastrada!";
@@ -97,7 +97,7 @@ public class CadastroActivity extends AppCompatActivity {
                     usuario.setEmail(textEmail);
                     usuario.setSenha(textSenha);
 
-                    cadastrarUsuario( usuario );
+                    cadastrarUsuario(usuario);
 
                 } else {
                     Toast.makeText(CadastroActivity.this,

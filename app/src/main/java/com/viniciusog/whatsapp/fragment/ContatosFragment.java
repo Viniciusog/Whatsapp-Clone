@@ -54,7 +54,7 @@ public class ContatosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view =  inflater.inflate(R.layout.fragment_contatos, container, false);
+        View view = inflater.inflate(R.layout.fragment_contatos, container, false);
 
         /* Configurações iniciais */
         recyclerViewListaContatos = view.findViewById(R.id.recyclerViewListaContatos);
@@ -63,13 +63,13 @@ public class ContatosFragment extends Fragment {
         usuarioAtual = UsuarioFirebase.getUsuarioAtual();
 
         //Configura adapter
-        adapter = new ContatosAdapter( listaContatos, getActivity());
+        adapter = new ContatosAdapter(listaContatos, getActivity());
 
         //Configura recyclerView - getActivity() pega o contexto da activity em que o fragment está
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager( getActivity() );
-        recyclerViewListaContatos.setLayoutManager( layoutManager );
-        recyclerViewListaContatos.setHasFixedSize( true );
-        recyclerViewListaContatos.setAdapter( adapter );
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
+        recyclerViewListaContatos.setLayoutManager(layoutManager);
+        recyclerViewListaContatos.setHasFixedSize(true);
+        recyclerViewListaContatos.setAdapter(adapter);
 
         //Configurar evento de clique no recyclerView
         recyclerViewListaContatos.addOnItemTouchListener(
@@ -79,19 +79,19 @@ public class ContatosFragment extends Fragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Usuario usuarioSelecionado = listaContatos.get( position );
+                                Usuario usuarioSelecionado = listaContatos.get(position);
 
                                 boolean cabecalho = usuarioSelecionado.getEmail().isEmpty();
 
-                                if ( cabecalho ) {
+                                if (cabecalho) {
 
                                     Intent intent = new Intent(getActivity(), GrupoActivity.class);
-                                    startActivity( intent );
+                                    startActivity(intent);
 
                                 } else {
                                     Intent intent = new Intent(getActivity(), ChatActivity.class);
                                     intent.putExtra("chatContato", usuarioSelecionado);
-                                    startActivity( intent );
+                                    startActivity(intent);
                                 }
                             }
 
@@ -110,12 +110,12 @@ public class ContatosFragment extends Fragment {
 
         /*Difine usuário com email vazio,
          * em caso de email vazio, o usuário
-          * será utilizado como cabeçalho, exibindo novo grupo*/
+         * será utilizado como cabeçalho, exibindo novo grupo*/
         Usuario itemGrupo = new Usuario();
         itemGrupo.setNome("Novo Grupo");
         itemGrupo.setEmail("");
 
-        listaContatos.add( itemGrupo );
+        listaContatos.add(itemGrupo);
 
         return view;
     }
@@ -131,7 +131,7 @@ public class ContatosFragment extends Fragment {
     public void onStop() {
         super.onStop();
         //Remover listener para não ficar executando de forma indefinida
-        usuariosRef.removeEventListener( valueEventListenerContatos );
+        usuariosRef.removeEventListener(valueEventListenerContatos);
     }
 
     public void recuperarContatos() {
@@ -146,12 +146,12 @@ public class ContatosFragment extends Fragment {
                     FirebaseUser usuarioAtual = UsuarioFirebase.getUsuarioAtual();
 
                     //Pega um objeto do tipo usuário
-                    Usuario usuario = dados.getValue( Usuario.class );
+                    Usuario usuario = dados.getValue(Usuario.class);
 
                     //Não adiciona o usuário atual na lista de contatos
                     String emailUsuarioAtual = usuarioAtual.getEmail();
-                    if( !emailUsuarioAtual.equals(usuario.getEmail()) ) {
-                        listaContatos.add( usuario );
+                    if (!emailUsuarioAtual.equals(usuario.getEmail())) {
+                        listaContatos.add(usuario);
                     }
                 }
 

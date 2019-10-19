@@ -18,7 +18,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class GrupoSelecionadoAdapter extends RecyclerView.Adapter<GrupoSelecionadoAdapter.MyViewHolder>{
+public class GrupoSelecionadoAdapter extends RecyclerView.Adapter<GrupoSelecionadoAdapter.MyViewHolder> {
 
     private List<Usuario> contatosSelecionados;
     private Context context;
@@ -32,26 +32,26 @@ public class GrupoSelecionadoAdapter extends RecyclerView.Adapter<GrupoSeleciona
     @Override
     public GrupoSelecionadoAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemLista = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_grupo_selecionado, parent, false);
-        return new GrupoSelecionadoAdapter.MyViewHolder( itemLista );
+        return new GrupoSelecionadoAdapter.MyViewHolder(itemLista);
     }
 
     @Override
     public void onBindViewHolder(@NonNull GrupoSelecionadoAdapter.MyViewHolder holder, int position) {
 
-        Usuario usuario = contatosSelecionados.get( position );
+        Usuario usuario = contatosSelecionados.get(position);
 
-        holder.nome.setText( usuario.getNome() );
+        holder.nome.setText(usuario.getNome());
 
 
-        if ( usuario.getFoto() != null ) {
+        if (usuario.getFoto() != null) {
 
-            Uri uri = Uri.parse( usuario.getFoto() );
-            Glide.with( context )
-                    .load( uri )
-                    .into( holder.foto );
+            Uri uri = Uri.parse(usuario.getFoto());
+            Glide.with(context)
+                    .load(uri)
+                    .into(holder.foto);
         } else {
 
-                holder.foto.setImageResource( R.drawable.padrao );
+            holder.foto.setImageResource(R.drawable.padrao);
 
         }
     }

@@ -89,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
                     fragment.pesquisarConversas(newText.toLowerCase());
                 } else {
                     //Regarrega a lista de conversas original com todas as conversas
-                    fragment.recarregarConversas();
                 }
+                fragment.recarregarConversas();
                 return true;
             }
         });

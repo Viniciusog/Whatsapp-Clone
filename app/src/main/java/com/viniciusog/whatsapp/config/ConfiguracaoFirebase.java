@@ -15,7 +15,7 @@ public class ConfiguracaoFirebase {
 
     //Retorna instancia do FirebaseDatabase
     public static DatabaseReference getFirebaseDatabase() {
-        if(database == null) {
+        if (database == null) {
             database = FirebaseDatabase.getInstance().getReference();
         }
         return database;
@@ -23,15 +23,15 @@ public class ConfiguracaoFirebase {
 
     //Retorna instancia do FirebaseeAuth;
     public static FirebaseAuth getFirebaseAutenticacao() {
-        if(auth == null) {
-            auth  = FirebaseAuth.getInstance();
+        if (auth == null) {
+            auth = FirebaseAuth.getInstance();
         }
         return auth;
     }
 
     //Retorna instância do FirebaseStorage / StorageReference
     public static StorageReference getFirebaseStorage() {
-        if(storage == null) {
+        if (storage == null) {
             storage = FirebaseStorage.getInstance().getReference();
         }
         return storage;

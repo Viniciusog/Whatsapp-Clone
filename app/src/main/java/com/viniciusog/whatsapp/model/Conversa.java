@@ -6,21 +6,24 @@ import com.viniciusog.whatsapp.config.ConfiguracaoFirebase;
 public class Conversa {
 
     private String idRemetente;
-    private String  idDestinatario;
+    private String idDestinatario;
     private String ultimaMensagem;
     private Usuario usuarioExibicao;
+    //No firebase é mais fácil utilizar string do que boolean
+    private String isGroup;
+    private Grupo grupo;
 
     public Conversa() {
-
+        setIsGroup("false");
     }
 
     public void salvar() {
         DatabaseReference database = ConfiguracaoFirebase.getFirebaseDatabase();
-        DatabaseReference conversaRef  = database.child("conversas");
+        DatabaseReference conversaRef = database.child("conversas");
 
-        conversaRef.child( getIdRemetente() )
-                .child( getIdDestinatario())
-                .setValue( this ); //Vamos salvar todos os dados do objeto conversa
+        conversaRef.child(getIdRemetente())
+                .child(getIdDestinatario())
+                .setValue(this); //Vamos salvar todos os dados do objeto conversa
 
     }
 
@@ -54,5 +57,21 @@ public class Conversa {
 
     public void setUsuarioExibicao(Usuario usuario) {
         this.usuarioExibicao = usuario;
+    }
+
+    public String getIsGroup() {
+        return isGroup;
+    }
+
+    public void setIsGroup(String isGroup) {
+        this.isGroup = isGroup;
+    }
+
+    public Grupo getGrupo() {
+        return grupo;
+    }
+
+    public void setGrupo(Grupo grupo) {
+        this.grupo = grupo;
     }
 }

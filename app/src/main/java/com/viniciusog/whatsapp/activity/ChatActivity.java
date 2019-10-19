@@ -126,9 +126,9 @@ public class ChatActivity extends AppCompatActivity {
 
         //Configurar RecyclerView
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerMensagens.setLayoutManager( layoutManager );
-        recyclerMensagens.setHasFixedSize( true );
-        recyclerMensagens.setAdapter( adapter );
+        recyclerMensagens.setLayoutManager(layoutManager);
+        recyclerMensagens.setHasFixedSize(true);
+        recyclerMensagens.setAdapter(adapter);
 
         //Pegando referência das mensagens do firebase
         database = ConfiguracaoFirebase.getFirebaseDatabase();
@@ -168,7 +168,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if ( resultCode == RESULT_OK ) {
+        if (resultCode == RESULT_OK) {
             Bitmap imagem = null;
 
             try {
@@ -197,9 +197,9 @@ public class ChatActivity extends AppCompatActivity {
                     //Configurar referência do firebase
                     StorageReference imagemRef = storage.child("fotos")
                             .child(idUsuarioRemetente)
-                            .child( nomeImagem );
+                            .child(nomeImagem);
 
-                    UploadTask uploadTask = imagemRef.putBytes( dadosImagem );
+                    UploadTask uploadTask = imagemRef.putBytes(dadosImagem);
                     uploadTask.addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
@@ -214,16 +214,16 @@ public class ChatActivity extends AppCompatActivity {
                             String dowloadUrl = taskSnapshot.getDownloadUrl().toString();
 
                             Mensagem mensagem = new Mensagem();
-                            mensagem.setIdUsuario( idUsuarioRemetente );
+                            mensagem.setIdUsuario(idUsuarioRemetente);
                             //Esta mensagem não será usada
                             mensagem.setMensagem("imagem.jpeg");
-                            mensagem.setImagem( dowloadUrl );
+                            mensagem.setImagem(dowloadUrl);
 
                             //Salva imagem para o remetente
-                            salvarMensagem( idUsuarioRemetente, idUsuarioDestinatario, mensagem);
+                            salvarMensagem(idUsuarioRemetente, idUsuarioDestinatario, mensagem);
 
                             //Salva imagem para o destinatário
-                            salvarMensagem( idUsuarioDestinatario, idUsuarioRemetente, mensagem);
+                            salvarMensagem(idUsuarioDestinatario, idUsuarioRemetente, mensagem);
 
                             Toast.makeText(ChatActivity.this,
                                     "Sucesso ao enviar mensagem!",
@@ -246,8 +246,8 @@ public class ChatActivity extends AppCompatActivity {
 
         if (!textoMensagem.isEmpty()) {
             Mensagem msg = new Mensagem();
-            msg.setIdUsuario( idUsuarioRemetente );
-            msg.setMensagem( textoMensagem );
+            msg.setIdUsuario(idUsuarioRemetente);
+            msg.setMensagem(textoMensagem);
 
             //Salvar mensagem para o remetente
             salvarMensagem(idUsuarioRemetente, idUsuarioDestinatario, msg);
@@ -269,10 +269,10 @@ public class ChatActivity extends AppCompatActivity {
     private void salvarConversa(Mensagem mensagem) {
 
         Conversa conversaRemetente = new Conversa();
-        conversaRemetente.setIdRemetente( idUsuarioRemetente );
-        conversaRemetente.setIdDestinatario( idUsuarioDestinatario );
-        conversaRemetente.setUltimaMensagem( mensagem.getMensagem() );
-        conversaRemetente.setUsuarioExibicao( usuarioDestinatario );
+        conversaRemetente.setIdRemetente(idUsuarioRemetente);
+        conversaRemetente.setIdDestinatario(idUsuarioDestinatario);
+        conversaRemetente.setUltimaMensagem(mensagem.getMensagem());
+        conversaRemetente.setUsuarioExibicao(usuarioDestinatario);
 
         conversaRemetente.salvar();
     }
@@ -299,38 +299,38 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        mensagensRef.removeEventListener( childEventListenerMensagens );
+        mensagensRef.removeEventListener(childEventListenerMensagens);
     }
 
     private void recuperarMensagem() {
 
-    childEventListenerMensagens = mensagensRef.addChildEventListener(new ChildEventListener() {
-        @Override
-        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-            Mensagem mensagem = dataSnapshot.getValue( Mensagem.class );
-            mensagens.add( mensagem );
-            adapter.notifyDataSetChanged(); //Adapter será atualizado
-        }
+        childEventListenerMensagens = mensagensRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Mensagem mensagem = dataSnapshot.getValue(Mensagem.class);
+                mensagens.add(mensagem);
+                adapter.notifyDataSetChanged(); //Adapter será atualizado
+            }
 
-        @Override
-        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
 
-        }
+            }
 
-        @Override
-        public void onChildRemoved(DataSnapshot dataSnapshot) {
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
-        }
+            }
 
-        @Override
-        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
-        }
+            }
 
-        @Override
-        public void onCancelled(DatabaseError databaseError) {
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
-        }
-    });
+            }
+        });
     }
 }

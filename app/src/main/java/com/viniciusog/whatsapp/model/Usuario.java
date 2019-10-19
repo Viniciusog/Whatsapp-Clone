@@ -30,10 +30,10 @@ public class Usuario implements Serializable {
     public void salvar() {
 
         DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
-        DatabaseReference usuario = firebaseRef.child("usuarios").child( getId() );
+        DatabaseReference usuario = firebaseRef.child("usuarios").child(getId());
 
         //Irá salvar o objeto 'usuario' inteiro no firebase
-        usuario.setValue( this );
+        usuario.setValue(this);
 
     }
 
@@ -42,12 +42,12 @@ public class Usuario implements Serializable {
         DatabaseReference database = ConfiguracaoFirebase.getFirebaseDatabase();
 
         DatabaseReference usuariosRef = database.child("usuarios")
-                .child( identificadorUsuario );
+                .child(identificadorUsuario);
 
 
         Map<String, Object> valoresUsuario = converterParaMap();
 
-        usuariosRef.updateChildren( valoresUsuario );
+        usuariosRef.updateChildren(valoresUsuario);
     }
 
     @Exclude

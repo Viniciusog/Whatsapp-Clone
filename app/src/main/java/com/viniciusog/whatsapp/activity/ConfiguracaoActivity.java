@@ -126,12 +126,12 @@ public class ConfiguracaoActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 String nome = editPerfilNome.getText().toString();
-                boolean retorno = UsuarioFirebase.atualizarNomeUsuario( nome );
+                boolean retorno = UsuarioFirebase.atualizarNomeUsuario(nome);
 
-                usuarioLogado.setNome( nome );
+                usuarioLogado.setNome(nome);
                 usuarioLogado.atualizar();
 
-                if( retorno ) {
+                if (retorno) {
                     Toast.makeText(ConfiguracaoActivity.this,
                             "Nome alterado com sucesso!", Toast.LENGTH_SHORT).show();
                 }
@@ -205,8 +205,8 @@ public class ConfiguracaoActivity extends AppCompatActivity {
     public void atualizaFotoUsuario(Uri url) {
         boolean retorno = UsuarioFirebase.atualizarFotoUsuario(url);
 
-        if ( retorno ) {
-            usuarioLogado.setFoto( url.toString() );
+        if (retorno) {
+            usuarioLogado.setFoto(url.toString());
             usuarioLogado.atualizar();
 
             Toast.makeText(ConfiguracaoActivity.this,

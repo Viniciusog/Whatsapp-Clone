@@ -31,7 +31,7 @@ public class UsuarioFirebase {
             FirebaseUser usuario = getUsuarioAtual();
 
             UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
-                    .setDisplayName( nome )
+                    .setDisplayName(nome)
                     .build();
 
             usuario.updateProfile(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -79,13 +79,13 @@ public class UsuarioFirebase {
         FirebaseUser firebaseUser = getUsuarioAtual();
 
         Usuario usuario = new Usuario();
-        usuario.setEmail( firebaseUser.getEmail() );
-        usuario.setNome( firebaseUser.getDisplayName() );
+        usuario.setEmail(firebaseUser.getEmail());
+        usuario.setNome(firebaseUser.getDisplayName());
 
-        if( firebaseUser.getPhotoUrl() == null) {
+        if (firebaseUser.getPhotoUrl() == null) {
             usuario.setFoto("");
         } else {
-            usuario.setFoto( firebaseUser.getPhotoUrl().toString() );
+            usuario.setFoto(firebaseUser.getPhotoUrl().toString());
         }
 
         return usuario;

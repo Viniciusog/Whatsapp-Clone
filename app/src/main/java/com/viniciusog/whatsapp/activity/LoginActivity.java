@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if( task.isSuccessful() ) {
+                        if (task.isSuccessful()) {
                             Toast.makeText(LoginActivity.this,
                                     "Usuario logado com sucesso!",
                                     Toast.LENGTH_SHORT).show();
@@ -100,7 +100,7 @@ public class LoginActivity extends AppCompatActivity {
 
         FirebaseUser usuarioAtual = autenticacao.getCurrentUser();
 
-        if (usuarioAtual != null ) {
+        if (usuarioAtual != null) {
             abrirTelaPrincipal();
         }
     }

@@ -36,24 +36,24 @@ public class MensagensAdapter extends RecyclerView.Adapter<MensagensAdapter.MyVi
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-         View item = null;
+        View item = null;
         if (viewType == TIPO_REMETENTE) {
-             item = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_mensagem_remetente, parent, false);
+            item = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_mensagem_remetente, parent, false);
 
-        } else if (viewType == TIPO_DESTINATARIO){
-             item = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_mensagem_destinatario, parent, false);
+        } else if (viewType == TIPO_DESTINATARIO) {
+            item = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_mensagem_destinatario, parent, false);
         }
-        return new MyViewHolder( item );
+        return new MyViewHolder(item);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Mensagem mensagem = mensagens.get( position );
+        Mensagem mensagem = mensagens.get(position);
         String msg = mensagem.getMensagem();
         String imagem = mensagem.getImagem();
 
-        if(imagem != null) {
-            Uri url = Uri.parse( imagem );
+        if (imagem != null) {
+            Uri url = Uri.parse(imagem);
             Glide.with(context)
                     .load(url)
                     .into(holder.imagem);
@@ -61,7 +61,7 @@ public class MensagensAdapter extends RecyclerView.Adapter<MensagensAdapter.MyVi
             //Esconder texto
             holder.mensagem.setVisibility(View.GONE);
         } else {
-            holder.mensagem.setText( msg );
+            holder.mensagem.setText(msg);
 
             //Esconder imagem
             holder.imagem.setVisibility(View.GONE);
@@ -79,7 +79,7 @@ public class MensagensAdapter extends RecyclerView.Adapter<MensagensAdapter.MyVi
 
         //Poderiamos verificar o nó de quem está enviando para ver se foi o usuário logado
         //Caso o primeiro nó de usuário nas mensagens fosse igual ao id do usuário logado, seria tipo remetente
-        Mensagem mensagem = mensagens.get( position );
+        Mensagem mensagem = mensagens.get(position);
         String idUsuario = UsuarioFirebase.getIdentificadorUsuario();
 
         if (idUsuario.equals(mensagem.getIdUsuario())) {
