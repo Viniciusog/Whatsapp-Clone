@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
                         .create()
         );
 
-        ViewPager viewPager = findViewById(R.id.viewPager);
+        final ViewPager viewPager = findViewById(R.id.viewPager);
         viewPager.setAdapter(adapter);
 
         SmartTabLayout viewPagerTab = findViewById(R.id.viewPagerTab);
@@ -82,15 +82,31 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                ConversasFragment fragment = (ConversasFragment) adapter.getPage(0);
+                //Verifica se está pesquisando em Conversas ou Contatos
+                //dependendo da tab que estiver ativa
+                switch ( viewPager.getCurrentItem() ) {
+                    case 0: {
 
-                if (newText != null && !newText.isEmpty()) {
-                    //Passar o novo texto para pesquisa como letras minúsculas
-                    fragment.pesquisarConversas(newText.toLowerCase());
-                } else {
-                    //Regarrega a lista de conversas original com todas as conversas
+                        ConversasFragment conversasFragment = (ConversasFragment) adapter.getPage(0);
+                        if (newText != null && !newText.isEmpty()) {
+                            //Passar o novo texto para pesquisa como letras minúsculas
+                            conversasFragment.pesquisarConversas(newText.toLowerCase());
+                        } else {
+                            conversasFragment.recarregarConversas();
+                        }
+                        break;
+                    }
+                    case 1: {
+                        ContatosFragment contatosFragment = (ContatosFragment) adapter.getPage( 1 );
+                        if (newText != null && !newText.isEmpty()) {
+                            //Passar o novo texto para pesquisa como letras minúsculas
+                            contatosFragment.pesquisarContatos(newText.toLowerCase());
+                        } else {
+                            contatosFragment.recarregarContatos();
+                        }
+                        break;
+                    }
                 }
-                fragment.recarregarConversas();
                 return true;
             }
         });

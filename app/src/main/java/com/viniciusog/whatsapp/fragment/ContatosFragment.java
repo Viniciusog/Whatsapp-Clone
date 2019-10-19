@@ -24,7 +24,9 @@ import com.viniciusog.whatsapp.R;
 import com.viniciusog.whatsapp.activity.ChatActivity;
 import com.viniciusog.whatsapp.activity.GrupoActivity;
 import com.viniciusog.whatsapp.adapter.ContatosAdapter;
+import com.viniciusog.whatsapp.adapter.ConversasAdapter;
 import com.viniciusog.whatsapp.config.ConfiguracaoFirebase;
+import com.viniciusog.whatsapp.model.Conversa;
 import com.viniciusog.whatsapp.model.Usuario;
 
 import java.util.ArrayList;
@@ -79,8 +81,10 @@ public class ContatosFragment extends Fragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Usuario usuarioSelecionado = listaContatos.get(position);
 
+                                List<Usuario> listaContatosAtualizada = adapter.getListaContatos();
+
+                                Usuario usuarioSelecionado = listaContatosAtualizada.get(position);
                                 boolean cabecalho = usuarioSelecionado.getEmail().isEmpty();
 
                                 if (cabecalho) {
@@ -134,6 +138,7 @@ public class ContatosFragment extends Fragment {
         usuariosRef.removeEventListener(valueEventListenerContatos);
     }
 
+
     public void recuperarContatos() {
 
         valueEventListenerContatos = usuariosRef.addValueEventListener(new ValueEventListener() {
@@ -164,6 +169,33 @@ public class ContatosFragment extends Fragment {
 
             }
         });
+    }
+
+    public void pesquisarContatos(String texto) {
+
+        List<Usuario> listaContatosBusca = new ArrayList<>();
+
+
+        for (Usuario usuario : listaContatos) {
+            String nome = usuario.getNome().toLowerCase();
+
+            if (nome.contains(texto)) {
+                listaContatosBusca.add(usuario);
+            }
+
+        }
+
+        //Estamos 'refazendo' o adapter pois agora será listaConversaBusca que será exibida
+        adapter = new ContatosAdapter(listaContatosBusca, getActivity());
+        recyclerViewListaContatos.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    //Regarrega a lista de conversas original com todas as conversas
+    public void recarregarContatos() {
+        adapter = new ContatosAdapter(listaContatos, getActivity());
+        recyclerViewListaContatos.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
 }

@@ -14,9 +14,17 @@
         android:layout_alignParentLeft="true"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textNomeExibicao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Autor Mensagem"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
         <ImageView
             android:id="@+id/imageMensagemFoto"
-            android:layout_width="wrap_content"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             app:srcCompat="@drawable/padrao" />
 

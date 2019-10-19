@@ -73,12 +73,19 @@ public class ConversasFragment extends Fragment {
                     @Override
                     public void onItemClick(View view, int position) {
 
-                        Conversa conversaSelecionada = listaConversa.get(position);
-                        Intent intent = new Intent(getActivity(), ChatActivity.class)
-                                .putExtra("chatContato", conversaSelecionada.getUsuarioExibicao());
+                        //Agora o clique será sempre na lista atualizada
+                        List<Conversa> listaConversaAtualizada = adapter.getConversas();
+                        Conversa conversaSelecionada = listaConversaAtualizada.get(position);
 
-                        startActivity(intent);
-
+                        if (conversaSelecionada.getIsGroup().equals("true")) {
+                            Intent intent = new Intent(getActivity(), ChatActivity.class)
+                                    .putExtra("chatGrupo", conversaSelecionada.getGrupo());
+                            startActivity(intent);
+                        } else {
+                            Intent intent = new Intent(getActivity(), ChatActivity.class)
+                                    .putExtra("chatContato", conversaSelecionada.getUsuarioExibicao());
+                            startActivity(intent);
+                        }
                     }
 
                     @Override
@@ -91,7 +98,6 @@ public class ConversasFragment extends Fragment {
 
                     }
                 }
-
         ));
 
         //Configurar conversasRef
@@ -99,7 +105,6 @@ public class ConversasFragment extends Fragment {
         database = ConfiguracaoFirebase.getFirebaseDatabase();
         conversasRef = database.child("conversas")
                 .child(identificadorUsuario);
-
 
         return view;
     }
@@ -124,9 +129,16 @@ public class ConversasFragment extends Fragment {
         String ultimaMensagem = null;
 
         for (Conversa conversa : listaConversa) {
-            nome = conversa.getUsuarioExibicao().getNome().toLowerCase();
-            ultimaMensagem = conversa.getUltimaMensagem().toLowerCase();
 
+            //Conversa convencional
+            if (conversa.getUsuarioExibicao() != null) {
+                nome = conversa.getUsuarioExibicao().getNome().toLowerCase();
+                ultimaMensagem = conversa.getUltimaMensagem().toLowerCase();
+
+            } else { //Conversa de grupo
+                nome = conversa.getGrupo().getNome().toLowerCase();
+                ultimaMensagem = conversa.getUltimaMensagem().toLowerCase();
+            }
             if (nome.contains(texto) || ultimaMensagem.contains(texto)) {
                 listaConversasBusca.add(conversa);
             }
